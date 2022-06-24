@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
-import { appRouter } from './routes';
-import { pgKnex } from './configs/db.config';
-import { errorHandler } from './util/errors';
-import * as fs from 'fs';
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import dotenv from "dotenv";
+import { appRouter } from "./routes";
+import { pgKnex } from "./configs/db.config";
+import { errorHandler } from "./util/errors";
+import * as fs from "fs";
 
 dotenv.config();
 
@@ -20,29 +20,29 @@ app.use(
     extended: true,
   })
 );
-app.get('/', (req, res, next) => {
+app.get("/", (req, res, next) => {
   try {
-    const buffer = fs.readFileSync('./README.html');
+    const buffer = fs.readFileSync("./README.html");
     res.status(200).send(buffer.toString());
   } catch (err) {
     next(err);
   }
 });
-app.use('/api', appRouter);
+app.use("/api", appRouter);
 app.use(errorHandler);
 // cache setup
 if (process.env.PORT) {
-  console.log('heroku version');
+  console.log("heroku version");
   app.listen(process.env.PORT, async () => {
     console.log(`Raffle api listening on port ${process.env.PORT}`);
 
     pgKnex
-      .raw('SELECT 1')
+      .raw("SELECT 1")
       .then(() => {
-        console.log('PostgreSQL connected');
+        console.log("PostgreSQL connected");
       })
       .catch((e) => {
-        console.log('PostgreSQL not connected');
+        console.log("PostgreSQL not connected");
         console.error(e);
       });
 
@@ -56,17 +56,17 @@ if (process.env.PORT) {
     //     });
   });
 } else {
-  console.log('dev version');
+  console.log("dev version");
   app.listen(Number(process.env.DEVPORT), process.env.DEVHOST, async () => {
     console.log(`Raffle api listening on port ${process.env.DEVPORT}`);
 
     pgKnex
-      .raw('SELECT 1')
+      .raw("SELECT 1")
       .then(() => {
-        console.log('PostgreSQL connected');
+        console.log("PostgreSQL connected");
       })
       .catch((e) => {
-        console.log('PostgreSQL not connected');
+        console.log("PostgreSQL not connected");
         console.error(e);
       });
 

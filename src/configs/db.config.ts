@@ -1,9 +1,13 @@
-import knex from 'knex';
+import knex from "knex";
 
-const { HOST, PPORT, DATABASE, USER, PASSWORD = '' } = process.env;
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const { HOST, PPORT, DATABASE, USER, PASSWORD = "" } = process.env;
 
 export const pgKnex = knex({
-  client: 'pg',
+  client: "pg",
   connection: process.env.DATABASE_URL
     ? {
         connectionString: process.env.DATABASE_URL,
@@ -14,6 +18,6 @@ export const pgKnex = knex({
         port: Number(PPORT),
         database: DATABASE,
         user: USER,
-        password: PASSWORD,
+        password: PASSWORD.toString(),
       },
 });
